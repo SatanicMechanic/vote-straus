@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-# Local preview only. Production is GitHub Pages "legacy" (branch-based), which
-# builds server-side with its own pinned stack and ignores this file entirely.
+# Also the production build: CI runs `bundle exec jekyll build` with this
+# lockfile via the Actions-based Pages deploy — keep it current.
 gem "jekyll", "~> 4.4"
 gem "jekyll-feed"
