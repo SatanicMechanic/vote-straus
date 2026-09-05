@@ -1,0 +1,12 @@
+title: Morey Straus for Oregon House
+description: Libertarian Party — Oregon House of Representatives District 42
+baseurl: ""
+url: "https://vote.stra.us"
+markdown: kramdown
+kramdown:
+  input: GFM
+  hard_wrap: false
+plugins:
+  - jekyll-feed
+exclude:
+  - build.sh

@@ -1,0 +1,1353 @@
+/* ============================================================
+   STRAUS 2026 — Editorial-Brutalist
+   ============================================================ */
+
+:root {
+  /* Ink */
+  --black:        #000000;
+  --ink:          #0A0A0A;
+  --ink-2:        #141414;
+  --rule:         #262626;
+  --rule-hot:     #3A3A3A;
+
+  /* Gold (singular accent) */
+  --gold:         #C9A84C;
+  --gold-light:   #E2C47A;
+  --gold-dim:     #8C6D2E;
+  --gold-wash:    rgba(201,168,76,0.08);
+
+  /* Paper */
+  --paper:        #F5F0E8;
+  --paper-hot:    #FFFFFF;
+  --paper-dim:    #CBBFAA;
+  --mute:         #9A9690;
+  --mute-2:       #6B675F;
+
+  /* System */
+  --serif: 'Fraunces', 'Iowan Old Style', Georgia, serif;
+  --sans:  'DM Sans', system-ui, sans-serif;
+  --mono:  ui-monospace, 'SF Mono', 'Menlo', monospace;
+
+  --easing: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; scroll-padding-top: 72px; overflow-x: hidden; }
+
+body {
+  background: var(--black);
+  color: var(--paper);
+  font-family: var(--sans);
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection { background: var(--gold); color: var(--black); }
+
+/* ============================================================
+   HERO — asymmetric, oversized, bleeding past edges
+   ============================================================ */
+
+.hero {
+  position: relative;
+  min-height: min(88svh, 820px); /* under 100vh: trims the dead air above the lockup, and the nav peeking up signals scroll */
+  max-height: 900px;
+  display: grid;
+  grid-template-columns: 1fr;
+  overflow: hidden;
+  border-bottom: 1px solid var(--rule);
+}
+
+.hero-media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background-color: #0c1810;
+  /* No jpg fallback: every engine shipped webp before it shipped image-set(), so an
+     image-set() fallback only ever served the jpg to browsers that read webp fine —
+     and paid for both, since the <link rel=preload> above fetches the webp regardless.
+     Safari <=13 gets the background-color above, which is the same near-black. */
+  background-image: url('../images/laurelhurst-hero.webp');
+  background-size: cover;
+  background-position: center 55%; /* favours the pond and the dark lower half the lockup sits on */
+  transform: scale(1.04);
+  animation: heroZoom 22s ease-out forwards;
+  /* webp is a 1920w q72 re-encode of the graded jpg; regrade from ac6b384 original, never from the webp */
+  /* No filter by design. The source used to arrive with its shadows crushed — the
+     darkest quarter of the frame sat at 0.024 luminance, a void rather than dark
+     detail, which is what read as gloom. brightness() can't fix that: it multiplies,
+     so it lifts the sky as fast as the shadows and washes out the one bright area
+     the composition depends on. The file now carries a baked lift-gamma curve
+     (shadows 0.024 -> 0.094) plus a warm push, so the shadows open without the
+     highlights moving. Anything added back here operates on the whole frame again
+     and undoes that. Ungraded original is the version of this file at ac6b384:
+     git show ac6b384:assets/images/laurelhurst-hero.jpg > original.jpg
+     Regrade from that, never from the shipped file, or the curve compounds. */
+}
+
+@keyframes heroZoom {
+  from { transform: scale(1.04); }
+  to   { transform: scale(1.00); }
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg,
+      rgba(0,0,0,0.45) 0%,
+      rgba(0,0,0,0.06) 30%,
+      rgba(0,0,0,0.32) 70%, /* was 0.55 — calibrated for a bright snowy peak, too heavy for a dusk shot */
+      rgba(0,0,0,0.98) 100%);
+}
+
+.hero-grid {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2.4rem 1.6rem 3.2rem;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  min-height: min(88svh, 820px); /* must track .hero or the grid overflows and gets clipped */
+  max-height: 900px;
+}
+
+.hero-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 2rem;
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--paper);
+  opacity: 0;
+  animation: fadeDown 0.9s 0.1s var(--easing) forwards;
+}
+
+.hero-top-left { display: flex; flex-direction: column; gap: 0.3rem; }
+.hero-top-left strong { color: var(--gold); font-weight: 500; }
+
+.hero-lpo-logo {
+  height: 70px;
+  width: auto;
+  opacity: 0.92;
+}
+
+.hero-body {
+  align-self: end;
+  padding-bottom: 1rem;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(240px, 400px);
+  gap: 3rem;
+  align-items: end;
+}
+
+.hero-copy { min-width: 0; }
+
+/* Candidate headshot — bottom-anchored, rises out of the fold */
+.hero-portrait {
+  grid-column: 2;
+  grid-row: 1;
+  margin: 0 0 -4.2rem; /* cancel hero-body + hero-grid bottom padding; .hero clips, so he rises out of the fold */
+  align-self: end;
+  opacity: 0;
+  animation: fadeUp 1s 0.45s var(--easing) forwards;
+}
+
+/* <picture> is inline by default; the baseline gap would offset the negative margin above */
+.hero-portrait picture { display: block; }
+
+/* Alpha cutout — no backdrop to hide, so no edge feathering. The shadow follows
+   the alpha and separates him from the mid-tone forest; the bottom fade dissolves
+   the chest crop into the gradient's near-black band. */
+.hero-portrait img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 66vh;
+  object-fit: contain;
+  object-position: bottom;
+  filter: drop-shadow(0 6px 34px rgba(0,0,0,0.8));
+  /* bottom fade dissolves the chest crop; the narrow side fades soften the
+     shoulders, which the source photo cuts flat at its own frame edges */
+  mask-image:
+    linear-gradient(to bottom, #000 66%, transparent 97%),
+    linear-gradient(to right, transparent 0%, #000 11%, #000 89%, transparent 100%);
+  mask-composite: intersect;
+}
+
+.hero-kicker {
+  display: block;
+  font-family: var(--mono);
+  font-size: 0.82rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1.4rem;
+  opacity: 0;
+  animation: fadeUp 0.9s 0.25s var(--easing) forwards;
+}
+
+.hero-kicker::before {
+  content: "";
+  display: inline-block;
+  width: 28px;
+  height: 1px;
+  background: var(--gold);
+  vertical-align: 0.3em;
+  margin-right: 0.8rem;
+}
+
+/* The brutalist name — bleeds past edges on desktop */
+.hero-name {
+  font-family: var(--serif);
+  font-weight: 900;
+  font-variation-settings: "opsz" 144, "wght" 900;
+  line-height: 0.86;
+  letter-spacing: -0.045em;
+  color: var(--paper-hot);
+  margin: 0;
+  opacity: 0;
+  animation: fadeUp 1s 0.35s var(--easing) forwards;
+}
+
+.hero-name-first {
+  display: block;
+  font-size: clamp(2rem, 5vw, 3.6rem);
+  font-weight: 300;
+  font-style: italic;
+  font-variation-settings: "opsz" 144, "wght" 300;
+  color: var(--gold);
+  letter-spacing: -0.02em;
+  margin-bottom: 0.3rem;
+}
+
+.hero-name-last {
+  display: block;
+  font-size: clamp(4rem, 11vw, 9.5rem);
+  margin-left: -0.04em;
+}
+
+.hero-tagline {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 300;
+  font-size: clamp(1.2rem, 2.4vw, 1.8rem);
+  color: var(--paper);
+  max-width: 28ch;
+  line-height: 1.25;
+  margin-top: 1.6rem;
+  opacity: 0;
+  animation: fadeUp 0.9s 0.55s var(--easing) forwards;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.6rem 2.4rem;
+  align-items: center;
+  margin-top: 2.4rem;
+  opacity: 0;
+  animation: fadeUp 0.9s 0.75s var(--easing) forwards;
+}
+
+.cta-primary {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.9rem;
+  color: var(--gold);
+  text-decoration: none;
+  border-bottom: 1px solid var(--gold);
+  padding-bottom: 6px;
+  transition: color 0.2s, border-color 0.2s, transform 0.2s var(--easing);
+}
+
+.cta-primary .cta-index {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  color: var(--gold-dim);
+  text-transform: uppercase;
+}
+
+.cta-primary .cta-label {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 1.25rem;
+}
+
+.cta-primary .cta-arrow {
+  font-size: 1.1rem;
+  transition: transform 0.25s var(--easing);
+}
+
+.cta-primary:hover {
+  color: var(--gold-light);
+  border-color: var(--gold-light);
+}
+
+.cta-primary:hover .cta-arrow { transform: translateX(6px); }
+
+.cta-ghost {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 400;
+  font-variation-settings: "opsz" 144, "wght" 400;
+  font-size: 1.2rem;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--paper);
+  text-decoration: none;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--rule-hot);
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.cta-ghost:hover { color: var(--gold); border-color: var(--gold); }
+
+/* ============================================================
+   NAV — brutalist: numbered, tracked, quiet but present
+   ============================================================ */
+
+nav.site-nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  background: rgba(0,0,0,0.88);
+  backdrop-filter: blur(18px) saturate(1.2);
+  -webkit-backdrop-filter: blur(18px) saturate(1.2);
+  border-bottom: 1px solid var(--rule);
+}
+
+nav.site-nav::-webkit-scrollbar { display: none; }
+
+
+.nav-inner {
+  padding: 0 1.6rem;
+  display: flex;
+  align-items: stretch;
+  justify-content: flex-start;
+  min-width: 100%;
+}
+
+.nav-inner ul {
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  gap: 0;
+}
+
+.nav-inner a {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.85rem 0.6rem;
+  color: var(--mute);
+  text-decoration: none;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition: color 0.2s;
+  border-right: 1px solid transparent;
+}
+
+.nav-inner a:hover { color: var(--paper-hot); }
+
+/* The nav wraps to two rows on desktop, where there's width for it. Below
+   1000px it goes back to a one-row scroller: 19 wrapped items on a phone is
+   five or six rows of sticky bar eating a third of the viewport. */
+/* between 1000 and 1400 the nav still wraps to two rows */
+@media (max-width: 1400px) {
+  html { scroll-padding-top: 108px; }
+}
+
+@media (max-width: 1000px) {
+  html { scroll-padding-top: 60px; }
+  nav.site-nav {
+    overflow-x: auto;
+    -webkit-mask-image: linear-gradient(to right, black calc(100% - 40px), transparent);
+    mask-image: linear-gradient(to right, black calc(100% - 40px), transparent);
+  }
+  .nav-inner { width: max-content; }
+  .nav-inner ul { flex-wrap: nowrap; min-width: max-content; }
+}
+
+/* ============================================================
+   LAYOUT PRIMITIVES
+   ============================================================ */
+
+.container {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 0 1.6rem;
+}
+
+.container-wide {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 1.6rem;
+}
+
+section {
+  position: relative;
+  padding: 6rem 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.section-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1.8rem;
+}
+
+.section-label::before {
+  content: "";
+  display: inline-block;
+  width: 24px;
+  height: 1px;
+  background: var(--gold);
+}
+
+/* ============================================================
+   ABOUT — asymmetric, two-column on desktop
+   ============================================================ */
+
+#about { padding: 7rem 0 6rem; }
+
+.about-grid {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 1.6rem;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2.5rem;
+}
+
+@media (min-width: 900px) {
+  .about-grid {
+    grid-template-columns: 2fr 5fr;
+    gap: 4rem;
+  }
+}
+
+.about-meta { position: relative; }
+.about-meta .section-label { margin-bottom: 0.8rem; }
+.about-meta-title {
+  font-family: var(--serif);
+  font-weight: 300;
+  font-style: italic;
+  font-size: 1.05rem;
+  color: var(--paper-dim);
+  line-height: 1.4;
+}
+
+.about-text h2 {
+  font-family: var(--serif);
+  font-weight: 700;
+  font-variation-settings: "opsz" 144, "wght" 700;
+  font-size: clamp(2.6rem, 5vw, 4rem);
+  line-height: 0.98;
+  letter-spacing: -0.035em;
+  color: var(--paper-hot);
+  margin-bottom: 1.4rem;
+}
+
+.about-text .candidate-title {
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--mute);
+  margin-bottom: 1.8rem;
+}
+
+.about-text p {
+  color: var(--paper-dim);
+  font-size: 1.02rem;
+  line-height: 1.7;
+  max-width: 58ch;
+}
+
+.about-text p + p { margin-top: 1rem; }
+
+/* ============================================================
+   PLATFORM BODY — narrow column, editorial typography
+   ============================================================ */
+
+.platform-body {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 0 1.6rem;
+}
+
+.platform-body h2 {
+  font-family: var(--serif);
+  font-weight: 700;
+  font-variation-settings: "opsz" 144, "wght" 700;
+  font-size: clamp(2.6rem, 6vw, 4.4rem);
+  line-height: 0.98;
+  letter-spacing: -0.035em;
+  color: var(--paper-hot);
+  margin: 6rem 0 2rem;
+  padding-top: 4rem;
+  border-top: 1px solid var(--rule);
+  position: relative;
+}
+
+.platform-body h2:first-child {
+  margin-top: 2rem;
+  padding-top: 0;
+  border-top: none;
+}
+
+.platform-body h3 {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 1.25rem;
+  color: var(--gold);
+  margin: 2.4rem 0 0.7rem;
+}
+
+.platform-body p {
+  color: var(--paper-dim);
+  font-size: 1.02rem;
+  line-height: 1.72;
+  margin-bottom: 1.1rem;
+}
+
+.platform-body strong {
+  color: var(--paper-hot);
+  font-weight: 500;
+}
+
+.platform-body em { font-style: italic; color: var(--paper); }
+
+.platform-body ul { list-style: none; margin: 1.2rem 0; }
+
+.platform-body ul li {
+  color: var(--paper-dim);
+  font-size: 1.02rem;
+  padding: 0.85rem 0 0.85rem 2.2rem;
+  position: relative;
+  border-bottom: 1px solid var(--rule);
+  line-height: 1.65;
+}
+
+.platform-body ul li:last-child { border-bottom: none; }
+
+.platform-body ul li::before {
+  content: counter(list-item, decimal-leading-zero);
+  position: absolute;
+  left: 0;
+  top: 0.95rem;
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  color: var(--gold-dim);
+}
+
+.platform-body hr { display: none; }
+
+.platform-body a {
+  color: var(--gold);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(201,168,76,0.32);
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.platform-body a:hover { border-color: var(--gold); color: var(--gold-light); }
+
+/* ============================================================
+   THE CASCADE — numbered typographic chain
+   ============================================================ */
+
+.cascade {
+  max-width: 1400px;
+  margin: 3rem auto 2rem;
+  padding: 0 1.6rem;
+}
+
+.cascade-header {
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1.6rem;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.cascade-header::before,
+.cascade-header::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--rule);
+}
+
+.cascade-chain { display: grid; grid-template-columns: 1fr; }
+
+.cascade-step {
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  column-gap: 1.4rem;
+  padding: 1.8rem 0;
+  border-top: 1px solid var(--rule);
+  align-items: baseline;
+}
+
+.cascade-step:last-child { border-bottom: 1px solid var(--rule); }
+
+.cascade-num {
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  color: var(--gold-dim);
+  padding-top: 0.6rem;
+}
+
+.cascade-body {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.4rem;
+}
+
+@media (min-width: 820px) {
+  .cascade-body { grid-template-columns: 5fr 4fr; gap: 2rem; align-items: baseline; }
+}
+
+.cascade-name {
+  font-family: var(--serif);
+  font-weight: 700;
+  font-variation-settings: "opsz" 144, "wght" 700;
+  font-size: clamp(1.8rem, 4.4vw, 3.2rem);
+  line-height: 0.98;
+  letter-spacing: -0.02em;
+  color: var(--paper-hot);
+}
+
+.cascade-effect {
+  font-family: var(--sans);
+  font-size: 0.95rem;
+  color: var(--paper-dim);
+  line-height: 1.5;
+  max-width: 46ch;
+}
+
+.cascade-footer {
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--mute);
+  margin-top: 1.6rem;
+  text-align: right;
+}
+
+.cascade-footer em {
+  font-style: normal;
+  color: var(--gold);
+}
+
+/* ============================================================
+   PLATFORM AT A GLANCE — the index between thesis and detail
+   The Cascade above is a narrative chain: tall rows, display serif.
+   This is its opposite number — a dense two-column index. Same
+   hairline vocabulary, deliberately quieter type, so the two blocks
+   don't read as the same device twice.
+   ============================================================ */
+
+.glance {
+  display: block;
+  margin: 4.5rem -1.6rem;
+  padding: 3rem 1.6rem 3.25rem;
+  background: var(--ink);
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+}
+
+/* an eyebrow, not a title — must outrank .platform-body h2 (0,1,1) */
+.platform-body .glance-header {
+  font-family: var(--mono);
+  font-weight: 400;
+  font-variation-settings: normal;
+  font-size: 0.8rem;
+  line-height: 1.4;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin: 0 0 1.75rem;
+  padding: 0;
+  border: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.glance-header::before,
+.glance-header::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--rule);
+}
+
+.glance-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  column-gap: 2.75rem;
+  border-bottom: 1px solid var(--rule); /* closes the last row whatever the item count or column count */
+}
+
+@media (min-width: 680px) {
+  .glance-grid { grid-template-columns: 1fr 1fr; }
+}
+
+.glance-item {
+  display: block;
+  padding: 1.05rem 0.75rem;
+  margin-inline: -0.75rem; /* the hover wash bleeds past the text, the text stays aligned to the header rule */
+  border-top: 1px solid var(--rule);
+  text-decoration: none;
+  transition: background-color 0.25s var(--easing), border-color 0.25s var(--easing), box-shadow 0.25s var(--easing);
+}
+
+.glance-item > span {
+  display: block;
+  transition: transform 0.25s var(--easing);
+}
+
+.glance-label {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.3rem;
+}
+
+.glance-claim {
+  font-family: var(--serif);
+  font-weight: 700;
+  font-variation-settings: "opsz" 144, "wght" 700;
+  font-size: clamp(1.05rem, 2.2vw, 1.28rem);
+  line-height: 1.18;
+  letter-spacing: -0.015em;
+  color: var(--paper-hot);
+  text-wrap: balance;
+}
+
+/* gold rule slides in at the left edge and the row steps aside for it.
+   translate rather than padding so nothing reflows mid-transition. */
+.glance-item:hover,
+.glance-item:focus-visible {
+  background: var(--gold-wash);
+  border-top-color: var(--gold-dim);
+  box-shadow: inset 2px 0 0 var(--gold);
+}
+
+.glance-item:hover > span,
+.glance-item:focus-visible > span { transform: translateX(0.55rem); }
+
+/* ============================================================
+   DATA STATEMENTS — full-bleed numbers
+   ============================================================ */
+
+.datum {
+  margin: 3rem -1.6rem;
+  padding: 3rem 1.6rem;
+  background: var(--ink);
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  position: relative;
+}
+
+.datum-inner {
+  max-width: 780px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.8rem;
+}
+
+@media (min-width: 700px) {
+  .datum-inner { grid-template-columns: auto 1fr; gap: 2rem; align-items: baseline; }
+}
+
+.datum-number {
+  font-family: var(--serif);
+  font-weight: 900;
+  font-variation-settings: "opsz" 144, "wght" 900;
+  font-size: clamp(4rem, 14vw, 9rem);
+  line-height: 0.88;
+  letter-spacing: -0.045em;
+  color: var(--paper-hot);
+}
+
+.datum-number .unit {
+  color: var(--gold);
+  font-weight: 300;
+  font-style: italic;
+  font-variation-settings: "opsz" 144, "wght" 300;
+  font-size: 0.55em;
+  margin-left: -0.08em;
+  letter-spacing: -0.02em;
+}
+
+.datum-number .sub {
+  font-family: var(--mono);
+  color: var(--gold-dim);
+  font-size: 0.22em;
+  letter-spacing: 0.1em;
+  font-weight: 400;
+  font-style: normal;
+  vertical-align: 0.9em;
+  margin-left: 0.2em;
+}
+
+.datum-caption {
+  font-family: var(--sans);
+  font-weight: 400;
+  color: var(--paper);
+  font-size: 1.05rem;
+  line-height: 1.6;
+  max-width: 40ch;
+}
+
+.datum-caption strong {
+  font-weight: 500;
+  color: var(--paper-hot);
+}
+
+/* ============================================================
+   PULL QUOTES — brutalist editorial
+   ============================================================ */
+
+.pullquote {
+  margin: 3.5rem -1.6rem;
+  padding: 3rem 1.6rem;
+  background: var(--ink);
+  border-top: 1px solid var(--gold);
+  border-bottom: 1px solid var(--rule);
+  position: relative;
+}
+
+.pullquote-inner {
+  max-width: 780px;
+  margin: 0 auto;
+}
+
+.pullquote blockquote {
+  font-family: var(--serif);
+  font-weight: 300;
+  font-style: italic;
+  font-variation-settings: "opsz" 144, "wght" 300;
+  font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+  line-height: 1.2;
+  color: var(--paper-hot);
+  letter-spacing: -0.01em;
+  border: none;
+  padding: 0;
+  margin: 0;
+  text-indent: -0.4em;
+}
+
+.pullquote blockquote::before {
+  content: "“";
+  color: var(--gold);
+  font-size: 1em;
+  font-style: normal;
+  margin-right: 0.04em;
+}
+
+.pullquote blockquote::after {
+  content: "”";
+  color: var(--gold);
+  font-style: normal;
+}
+
+.pullquote cite {
+  display: block;
+  margin-top: 1.4rem;
+  font-family: var(--mono);
+  font-size: 0.82rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-style: normal;
+}
+
+.pullquote cite::before { content: "— "; color: var(--gold-dim); }
+
+/* Override platform-body's default blockquote inside pullquote */
+.platform-body .pullquote blockquote { color: var(--paper-hot); }
+
+/* Final-kicker variant — no citation, roman upright, no quote marks, heavier presence */
+.pullquote-final {
+  margin: 4.5rem -1.6rem 0;
+  padding: 5rem 1.6rem 5rem;
+  border-top: 1px solid var(--gold);
+  border-bottom: 1px solid var(--gold);
+}
+
+.pullquote-final blockquote {
+  font-style: normal;
+  font-weight: 300;
+  font-variation-settings: "opsz" 144, "wght" 300;
+  font-size: clamp(2rem, 5vw, 3.4rem);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  text-align: center;
+  text-indent: 0;
+}
+
+.pullquote-final blockquote::before,
+.pullquote-final blockquote::after { content: none; }
+
+/* ============================================================
+   SUPPORT — includes share buttons, proper CSS class
+   ============================================================ */
+
+#support { padding-top: 6rem; padding-bottom: 6rem; }
+
+.support-inner { max-width: 780px; margin: 0 auto; padding: 0 1.6rem; }
+
+.support-heading {
+  font-family: var(--serif);
+  font-weight: 700;
+  font-variation-settings: "opsz" 144, "wght" 700;
+  font-size: 1.8rem;
+  letter-spacing: -0.02em;
+  color: var(--gold);
+  margin-bottom: 0.8rem;
+}
+
+.support-heading + p { color: var(--paper-dim); font-size: 1rem; }
+
+
+.share-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.share-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.65rem 1.2rem;
+  border: 1px solid var(--rule-hot);
+  color: var(--mute);
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+
+.share-btn:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+  background: var(--gold-wash);
+}
+
+/* ============================================================
+   LINKS
+   ============================================================ */
+
+.links-heading {
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: 1.6rem;
+  color: var(--gold);
+  margin-bottom: 1.6rem;
+}
+
+.link-list {
+  list-style: none;
+  border-top: 1px solid var(--rule);
+}
+
+.link-list li { border-bottom: 1px solid var(--rule); }
+
+.link-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.3rem 0;
+  text-decoration: none;
+  color: var(--paper);
+  transition: color 0.2s, padding-left 0.2s;
+}
+
+.link-row:hover {
+  color: var(--gold);
+  padding-left: 0.6rem;
+}
+
+.link-row-name {
+  font-family: var(--serif);
+  font-size: 1.2rem;
+  font-weight: 400;
+}
+
+.link-row-arrow {
+  font-family: var(--mono);
+  font-size: 0.9rem;
+  color: var(--gold-dim);
+  transition: color 0.2s, transform 0.2s;
+  flex-shrink: 0;
+  margin-left: 1rem;
+}
+
+.link-row:hover .link-row-arrow {
+  color: var(--gold);
+  transform: translate(3px, -3px);
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+
+footer {
+  padding: 4rem 1.6rem 3rem;
+  border-top: 1px solid var(--rule);
+  background: var(--ink);
+}
+
+.footer-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.6rem;
+  align-items: center;
+  text-align: center;
+}
+
+@media (min-width: 760px) {
+  .footer-inner {
+    grid-template-columns: auto 1fr auto;
+    text-align: left;
+  }
+}
+
+.footer-lpo-logo {
+  height: 48px;
+  width: auto;
+  opacity: 0.55;
+  transition: opacity 0.2s;
+}
+
+.footer-inner a:hover .footer-lpo-logo { opacity: 1; }
+
+/* Sits outside .footer-inner — that's a 3-column grid and a fourth child breaks it */
+.footer-credit {
+  max-width: 1400px;
+  margin: 1.6rem auto 0;
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  color: var(--mute-2);
+  text-align: center;
+}
+
+.footer-credit a { color: inherit; }
+
+.footer-meta {
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--mute);
+}
+
+.footer-email {
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold-dim);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.footer-email:hover { color: var(--gold); }
+
+/* ============================================================
+   ANIMATIONS
+   ============================================================ */
+
+@keyframes fadeDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================================
+   FOOTNOTES — kramdown generates the numbering and backlinks
+   ============================================================ */
+
+.platform-body sup[id^="fnref"] { line-height: 0; }
+
+.platform-body sup a.footnote {
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  font-weight: 500;
+  color: var(--gold);
+  text-decoration: none;
+  padding: 0 0.1em 0 0.15em;
+  border-bottom: none;
+}
+
+.platform-body sup a.footnote:hover { color: var(--gold-light); }
+
+.footnotes {
+  max-width: 780px;
+  margin: 5rem auto 0;
+  padding: 2.5rem 1.6rem 0;
+  border-top: 1px solid var(--rule);
+  color: var(--mute);
+  font-size: 0.86rem;
+  line-height: 1.6;
+}
+
+.footnotes::before {
+  content: "Sources";
+  display: block;
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1.8rem;
+}
+
+.footnotes ol { padding-left: 1.4rem; }
+.footnotes li { margin-bottom: 1.4rem; }
+.footnotes li::marker { color: var(--gold-dim); font-family: var(--mono); font-size: 0.8rem; }
+.footnotes p { margin: 0; }
+.footnotes a { color: var(--paper-dim); text-decoration: underline; text-underline-offset: 2px; }
+.footnotes a:hover { color: var(--gold-light); }
+.footnotes a.reversefootnote { text-decoration: none; color: var(--gold-dim); margin-left: 0.4rem; }
+
+/* target highlight so a jumped-to note is findable */
+.footnotes li:target { background: var(--gold-wash); }
+
+/* ============================================================
+   ACCESSIBILITY
+   ============================================================ */
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 200;
+  padding: 0.9rem 1.4rem;
+  background: var(--gold);
+  color: var(--black);
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+.skip-link:focus { left: 0; }
+
+.support-aside {
+  margin-top: 1.2rem;
+  font-style: italic;
+  color: var(--paper-dim);
+}
+
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .hero-bg { transform: scale(1); }
+}
+
+/* ============================================================
+   RESPONSIVE TUNING
+   ============================================================ */
+
+@media (max-width: 1000px) {
+  /* keep the name lockup and portrait from fighting on mid widths */
+  .hero-body { grid-template-columns: minmax(0, 1fr) minmax(180px, 260px); gap: 2rem; }
+}
+
+@media (max-width: 700px) {
+  body { font-size: 17px; }
+  /* let the hero grow past the cap rather than clip the CTAs — one bumped text
+     size otherwise puts the primary action behind overflow:hidden */
+  .hero, .hero-grid { max-height: none; }
+  .hero, .hero-grid { min-height: 74svh; } /* shorter fold: the 1fr row was banking ~500px of empty forest */
+  .hero-grid { padding: 1.6rem 1.2rem 2.4rem; }
+  .hero-top { font-size: 0.8rem; gap: 1rem; }
+  /* 38 letterspaced mono caps don't fit 390px — this buys back ~60px so the
+     kicker stops orphaning "HOUSE · D42" onto its own line */
+  .hero-kicker { font-size: 0.72rem; letter-spacing: 0.1em; }
+  .hero-kicker::before { width: 16px; margin-right: 0.5rem; }
+  .hero-lpo-logo { height: 52px; }
+  .hero-actions { gap: 1rem 1.4rem; margin-top: 1.8rem; }
+  /* This crop shows the photo's full height, putting bright sky where the copy
+     starts. Darken it in the full-bleed overlay, not on .hero-body — a scrim
+     sized to the copy block ramps up over ~25px and its top edge reads as a
+     hard line drawn across the photo. */
+  .hero-overlay {
+    background: linear-gradient(180deg,
+      rgba(0,0,0,0.55) 0%,
+      rgba(0,0,0,0.42) 26%,
+      rgba(0,0,0,0.52) 52%,
+      rgba(0,0,0,0.99) 100%);
+  }
+
+  /* Portrait becomes a medallion beside the tagline. display:contents hoists the
+     copy's children into .hero-body's grid so the circle and the tagline can share
+     a row — otherwise they're in different subtrees and can't line up without
+     duplicating the img in the markup. */
+  .hero-body {
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 0;
+    align-items: start;
+  }
+  .hero-copy { display: contents; }
+  .hero-kicker  { grid-column: 1 / -1; grid-row: 1; }
+  .hero-name    { grid-column: 1 / -1; grid-row: 2; }
+  .hero-actions { grid-column: 1 / -1; grid-row: 4; }
+  .hero-tagline { grid-column: 2; grid-row: 3; align-self: center; }
+
+  .hero-portrait {
+    grid-column: 1;
+    grid-row: 3;
+    align-self: start;
+    width: 92px;
+    margin: 1.6rem 1.1rem 0 0; /* top margin matches .hero-tagline's so the two centre on each other */
+  }
+
+  .hero-portrait img {
+    width: 92px;
+    height: 92px;
+    max-height: none;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center 10%; /* frames the face; lower this if the crown gets clipped */
+    background: rgba(10, 16, 12, 0.66); /* cutout is transparent — the disc needs its own fill */
+    box-shadow: 0 0 0 1px var(--gold), 0 6px 18px rgba(0,0,0,0.55);
+    mask-image: none; /* the desktop edge fades would eat a circle this small */
+    filter: none;
+  }
+  section { padding: 4.5rem 0; }
+  #about { padding: 4.5rem 0 3.5rem; } /* needs the ID to outrank #about's own desktop rule */
+  .platform-body h2 { margin: 4.5rem 0 1.4rem; padding-top: 3rem; }
+  .datum, .pullquote { margin-left: -1.2rem; margin-right: -1.2rem; padding-left: 1.2rem; padding-right: 1.2rem; }
+  .cascade-step { grid-template-columns: 44px 1fr; column-gap: 1rem; }
+  .cascade { padding: 0 1.2rem; }
+}
+
+
+/* ============================================================
+   PRINT — the platform gets saved, mailed, and handed over
+   ============================================================ */
+
+@media print {
+  html { scroll-padding-top: 0; }
+
+  body {
+    background: #fff;
+    color: #000;
+    font-size: 11pt;
+    line-height: 1.45;
+  }
+
+  .hero-media,
+  nav.site-nav,
+  .skip-link,
+  .share-row,
+  #share,
+  .hero-actions,
+  .hero-lpo-logo,
+  .hero-portrait { display: none; }
+
+  .hero, .hero-grid {
+    min-height: 0;
+    max-height: none;
+    padding: 0 0 1.5rem;
+    border-bottom: 2px solid #000;
+  }
+
+  .hero-name, .hero-tagline, .hero-kicker, .hero-top { color: #000; }
+
+  section { padding: 1.2rem 0; border-bottom: none; }
+
+  h1, h2, h3 { break-after: avoid; color: #000; }
+  .platform-body h2 { margin: 1.6rem 0 0.6rem; padding-top: 0; }
+  p, li { orphans: 3; widows: 3; }
+
+  .datum, .pullquote, .cascade, .cascade-step {
+    break-inside: avoid;
+    background: none;
+    border: 1px solid #999;
+    color: #000;
+    margin: 1rem 0;
+    padding: 0.8rem;
+  }
+
+  .datum-number, .cascade-num, .section-label { color: #000; }
+
+  a { color: #000; text-decoration: underline; }
+
+  /* a printed link with no URL is a dead end */
+  .platform-body a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 8pt;
+    word-break: break-all;
+  }
+
+  /* the Sources block already names each source — don't repeat the URL */
+  .footnotes a::after { content: none !important; }
+
+  footer { border-top: 1px solid #000; }
+  .footer-lpo-logo { display: none; }
+}
+
+.join-cta { margin-top: 2rem; }
