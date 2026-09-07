@@ -1,15 +1,18 @@
 version: 2
+
+# No `cooldown:` key on purpose. Since 2026-07-14 Dependabot applies a 3-day
+# default cooldown to version updates on every ecosystem, with no config — so
+# setting `default-days: 2` would SHORTEN it and `3` merely restates it. Set
+# this key only to ask for longer than 3 days. Security updates are exempt and
+# still open immediately, which is what you want.
+
 updates:
   - package-ecosystem: "bundler"
     directory: "/"
     schedule:
       interval: "daily"
-    cooldown:
-      default-days: 2
 
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "weekly"
-    cooldown:
-      default-days: 2

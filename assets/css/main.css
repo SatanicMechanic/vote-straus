@@ -558,6 +558,9 @@ section {
 
 .platform-body ul li:last-child { border-bottom: none; }
 
+.platform-body ul li p { margin: 0 0 0.6rem; line-height: inherit; }
+.platform-body ul li p:last-child { margin-bottom: 0; }
+
 .platform-body ul li::before {
   content: counter(list-item, decimal-leading-zero);
   position: absolute;
@@ -929,6 +932,10 @@ section {
 .pullquote-final blockquote::before,
 .pullquote-final blockquote::after { content: none; }
 
+.pullquote-claim blockquote::before,
+.pullquote-claim blockquote::after { content: none; }
+.pullquote-claim blockquote { text-indent: 0; }
+
 /* ============================================================
    SUPPORT — includes share buttons, proper CSS class
    ============================================================ */
@@ -1137,8 +1144,8 @@ footer {
   padding: 2.5rem 1.6rem 0;
   border-top: 1px solid var(--rule);
   color: var(--mute);
-  font-size: 0.86rem;
-  line-height: 1.6;
+  font-size: 0.82rem;
+  line-height: 1.5;
 }
 
 .footnotes::before {
@@ -1153,7 +1160,7 @@ footer {
 }
 
 .footnotes ol { padding-left: 1.4rem; }
-.footnotes li { margin-bottom: 1.4rem; }
+.footnotes li { margin-bottom: 1rem; }
 .footnotes li::marker { color: var(--gold-dim); font-family: var(--mono); font-size: 0.8rem; }
 .footnotes p { margin: 0; }
 .footnotes a { color: var(--paper-dim); text-decoration: underline; text-underline-offset: 2px; }
