@@ -242,7 +242,7 @@ The families with the least still get the worst of it: assigned schools, no exit
 
 **Positions:**
 - Support full educational freedom: repeal compulsory attendance laws and allow families to choose any educational arrangement — homeschooling, private school, microschools, apprenticeships — without government interference or required reporting. These are not theoretical alternatives; they exist, they work, and they expand rapidly wherever government does not suppress them.
-- Remove state barriers to new educational providers. Certificate-of-need requirements, accreditation mandates, and facility regulations function as incumbent-protection devices, not quality controls.
+- Remove state barriers to new educational providers. Accreditation mandates and facility regulations function as incumbent-protection devices, not quality controls.
 
   [Read more: Education: Free and Compulsory — Murray N. Rothbard, Mises Institute](https://mises.org/library/book/education-free-and-compulsory)
 - Oppose voucher programs. Vouchers do not liberate education; they extend the government's franchise into private institutions. Any private school accepting government money will be subjected to government curriculum, hiring, and admissions standards. This is the ordinary pattern, not a worst case. The goal is separation of school and state, not a new funding pipeline with strings attached.
