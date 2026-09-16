@@ -1357,4 +1357,4 @@ button:focus-visible {
   .footer-lpo-logo { display: none; }
 }
 
-.join-cta { margin-top: 2rem; }
+.join-cta { display: flex; flex-wrap: wrap; gap: 1.6rem 2.4rem; align-items: center; margin-top: 2rem; }
