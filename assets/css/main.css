@@ -139,11 +139,16 @@ body {
 .hero-top-left { display: flex; flex-direction: column; gap: 0.3rem; }
 .hero-top-left strong { color: var(--gold); font-weight: 500; }
 
+.hero-lpo-link { display: block; } /* blockify: inline anchor adds line-height gap under the img */
+
 .hero-lpo-logo {
-  height: 70px;
+  height: 84px;
   width: auto;
   opacity: 0.92;
+  transition: opacity 0.2s;
 }
+
+.hero-lpo-link:hover .hero-lpo-logo { opacity: 1; }
 
 .hero-body {
   align-self: end;
