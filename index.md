@@ -198,7 +198,7 @@ The 2026 budget cycle made the arrangement visible. Facing a $260 million shortf
 - Repeal Oregon's certificate-of-need laws. No one should need a rival's acquiescence to open a clinic, and no state process should let incumbents litigate a competitor out of existence after it has already won.
 - Remove state barriers to private provision. Oregon's licensing and scope-of-practice rules restrict who may provide counseling, prescribe medication, or operate recovery facilities. These rules protect incumbent providers, not patients.
 - Oppose involuntary commitment based on a diagnosis or a prediction of future conduct. That is preventive detention. A credible imminent threat is aggression and may be answered as such, on the grounds that apply to anyone. What nobody should hold is a standing power the passerby lacks: indefinite, triggered by diagnosis rather than danger, reviewed by the institution that exercises it.
-- Legalization of currently prohibited substances (see Drug Policy) is itself a mental health intervention. Some share of people labeled mentally ill are self-medicating with criminalized substances, and prohibition adds arrest and punishment to their difficulties.
+- Legalization of currently prohibited substances (see [Drug Policy](#drug-policy)) is itself a mental health intervention. Some share of people labeled mentally ill are self-medicating with criminalized substances, and prohibition adds arrest and punishment to their difficulties.
 - Mutual aid, peer support, and private recovery should be free to operate and to compete. The barrier is rarely an outright ban. It is that state money reaches only providers who adopt the state's credentials, so anyone outside the system competes against a subsidized rival funded partly by their own taxes. Stop paying the incumbents and the alternatives will not need protecting.
 
 ---
@@ -425,12 +425,12 @@ Cap-and-trade does not make anyone whole. It creates a market in government perm
 
 A person does not lose the right to work, trade, or rent a home by being born on the wrong side of a line. Free movement of labor follows from the same premises as every other position here: self-ownership and voluntary exchange. An agreement between a willing worker and a willing employer is not the federal government's to approve, and it is certainly not Salem's to police on the federal government's behalf.
 
-A state legislator casts no vote on border policy. What a state legislator votes on is whether Oregon participates: whether state and local personnel, data, and jail space are lent to federal enforcement. They should not be. And the most binding immigration controls in Oregon are not federal at all. They are the state's own licensing walls. The occupational licensing regime described under Removing Barriers to Work falls hardest on immigrants, for whom a trade learned over a lifetime is illegal to practice without years of incumbent-designed credentialing. A state that wanted immigrants to prosper would not need a new program. It would need to delete the ones standing in their way.
+A state legislator casts no vote on border policy. What a state legislator votes on is whether Oregon participates: whether state and local personnel, data, and jail space are lent to federal enforcement. They should not be. And the most binding immigration controls in Oregon are not federal at all. They are the state's own licensing walls. The occupational licensing regime described under [Removing Barriers to Work](#removing-barriers-to-work) falls hardest on immigrants, for whom a trade learned over a lifetime is illegal to practice without years of incumbent-designed credentialing. A state that wanted immigrants to prosper would not need a new program. It would need to delete the ones standing in their way.
 
 **Positions:**
 - Maintain and strengthen Oregon's sanctuary status: no state or local personnel, data, or jail space for federal immigration enforcement.
 - Oppose any state E-Verify mandate. Requiring federal permission before taking a job treats the right to work as a government grant.
-- Repeal the licensing barriers that lock immigrants out of legal work (see Removing Barriers to Work).
+- [Repeal the licensing barriers that lock immigrants out of legal work](#removing-barriers-to-work).
 - Support free movement of labor. A path to citizenship is a second-best remedy that presumes the legitimacy of the underlying controls; relief for people already living and working here should not wait on that presumption.
 
 ---
