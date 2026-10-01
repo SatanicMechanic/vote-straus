@@ -360,12 +360,12 @@ nav.site-nav::-webkit-scrollbar { display: none; }
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.85rem 0.6rem;
+  padding: 0.85rem 0.45rem;
   color: var(--mute);
   text-decoration: none;
   font-family: var(--mono);
   font-size: 0.72rem;
-  letter-spacing: 0.07em;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
   white-space: nowrap;
   transition: color 0.2s;
@@ -374,11 +374,14 @@ nav.site-nav::-webkit-scrollbar { display: none; }
 
 .nav-inner a:hover { color: var(--paper-hot); }
 
-/* The nav wraps to two rows on desktop, where there's width for it. Below
-   1000px it goes back to a one-row scroller: 19 wrapped items on a phone is
-   five or six rows of sticky bar eating a third of the viewport. */
-/* between 1000 and 1400 the nav still wraps to two rows */
-@media (max-width: 1400px) {
+/* Desktop never scrolls the nav: the scrollbar is hidden, and a mouse wheel
+   only scrolls vertically, so off-screen items would be unreachable without a
+   trackpad or Shift+wheel. 16 items fit one row from about 1132px; between
+   1000 and 1140 the nav wraps to two rows. Below 1000px it becomes a one-row
+   scroller: wrapped on a phone it would be five rows of sticky bar eating a
+   third of the viewport. Adding an item widens the one-row threshold —
+   re-measure and move the 1140 breakpoint. */
+@media (max-width: 1140px) {
   html { scroll-padding-top: 108px; }
 }
 

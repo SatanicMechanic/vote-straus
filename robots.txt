@@ -1,3 +1,4 @@
+# No license, permit, or fee is required to crawl this site.
 User-agent: *
 Allow: /
 Sitemap: https://vote.stra.us/sitemap.xml
