@@ -346,14 +346,23 @@ nav.site-nav::-webkit-scrollbar { display: none; }
   display: flex;
   align-items: stretch;
   justify-content: flex-start;
-  min-width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
+/* The negative margin cancels the links' side padding so the first and last
+   labels sit on the same edges as the hero and .container-wide. */
 .nav-inner ul {
   display: flex;
   flex-wrap: wrap;
   list-style: none;
   gap: 0;
+  margin: 0 -0.45rem;
+}
+
+/* One-row desktop: spread the items across the full content column. */
+@media (min-width: 1141px) {
+  .nav-inner ul { flex: 1; justify-content: space-between; }
 }
 
 .nav-inner a {
@@ -392,7 +401,7 @@ nav.site-nav::-webkit-scrollbar { display: none; }
     -webkit-mask-image: linear-gradient(to right, black calc(100% - 40px), transparent);
     mask-image: linear-gradient(to right, black calc(100% - 40px), transparent);
   }
-  .nav-inner { width: max-content; }
+  .nav-inner { width: max-content; max-width: none; }
   .nav-inner ul { flex-wrap: nowrap; min-width: max-content; }
 }
 
