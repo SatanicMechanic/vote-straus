@@ -217,5 +217,15 @@
     </p>
   </footer>
 
+  <script>
+    // GoatCounter only counts pageviews; log outbound link clicks as events.
+    ['click', 'auxclick'].forEach(function (type) {
+      document.addEventListener(type, function (e) {
+        var a = e.target.closest('a[href]');
+        if (!a || a.host === location.host || !window.goatcounter || !window.goatcounter.count) return;
+        window.goatcounter.count({ path: a.href, title: a.textContent.trim(), event: true });
+      });
+    });
+  </script>
 </body>
 </html>
