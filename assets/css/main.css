@@ -1128,6 +1128,29 @@ footer {
 
 .footer-email:hover { color: var(--gold); }
 
+/* Wrapper keeps email + pill in one grid cell — a fourth .footer-inner child breaks the grid */
+.footer-contact {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+@media (min-width: 760px) {
+  .footer-contact { align-items: flex-start; }
+}
+
+/* 20px glyph, 44px tap target; the negative margin cancels the padding so the glyph lines up with the email text */
+.footer-social {
+  display: inline-flex;
+  padding: 0.75rem;
+  margin: -0.75rem;
+  color: var(--mute);
+  transition: color 0.2s;
+}
+
+.footer-social:hover { color: var(--gold); }
+
 /* ============================================================
    ANIMATIONS
    ============================================================ */
@@ -1341,6 +1364,7 @@ button:focus-visible {
   nav.site-nav,
   .skip-link,
   .share-row,
+  .footer-social,
   #share,
   .hero-actions,
   .hero-lpo-logo,
