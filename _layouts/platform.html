@@ -238,6 +238,12 @@
       });
     });
 
+    // Outbound links open in a new tab so a reader checking a source keeps their place.
+    // Runs before the sidenotes are built, so the copied source links inherit it.
+    document.querySelectorAll('a[href^="http"]').forEach(function (a) {
+      if (a.host !== location.host) a.target = '_blank';
+    });
+
     // Sidenotes: each source beside the sentence that cites it. Wide screens set the notes in the
     // right margin; narrower ones open a note under its line when its number is tapped. The
     // Sources list stays as the no-script and print version.
