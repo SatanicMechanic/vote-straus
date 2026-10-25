@@ -1257,6 +1257,14 @@ button:focus-visible {
      kicker stops orphaning "HOUSE · D42" onto its own line */
   .hero-kicker { font-size: 0.72rem; letter-spacing: 0.1em; }
   .hero-kicker::before { width: 16px; margin-right: 0.5rem; }
+  /* small thin gold type over busy foliage: --gold alone is ~mid-tone on mid-tone,
+     so lift to --gold-light and add a soft halo */
+  .hero-kicker, .hero-top-left strong, .hero-name-first {
+    color: var(--gold-light);
+    text-shadow: 0 1px 6px rgba(0,0,0,0.75);
+  }
+  .hero-kicker::before { background: var(--gold-light); }
+  .hero-name-first { font-weight: 400; font-variation-settings: "opsz" 144, "wght" 400; }
   .hero-lpo-logo { height: 52px; }
   .hero-actions { gap: 1rem 1.4rem; margin-top: 1.8rem; }
   /* This crop shows the photo's full height, putting bright sky where the copy
