@@ -1183,6 +1183,11 @@ footer {
 
 .platform-body sup a.footnote:hover { color: var(--gold-light); }
 
+/* The number is ~14×11px; on a phone it's the only way to open a source, so give it an
+   invisible hit box about one line tall */
+.platform-body sup a.footnote { position: relative; }
+.platform-body sup a.footnote::after { content: ""; position: absolute; inset: -9px -8px; }
+
 .footnotes {
   max-width: 780px;
   margin: 5rem auto 0;
@@ -1208,12 +1213,78 @@ footer {
 .footnotes li { margin-bottom: 1rem; }
 .footnotes li::marker { color: var(--gold-dim); font-family: var(--mono); font-size: 0.8rem; }
 .footnotes p { margin: 0; }
-.footnotes a { color: var(--paper-dim); text-decoration: underline; text-underline-offset: 2px; border-bottom: 0; /* the underline is the link mark; the text-link border would double it */ }
-.footnotes a:hover { color: var(--gold-light); }
+.footnotes a, .sidenote a { color: var(--paper-dim); text-decoration: underline; text-underline-offset: 2px; border-bottom: 0; /* the underline is the link mark; the text-link border would double it */ }
+.footnotes a:hover, .sidenote a:hover { color: var(--gold-light); }
 .footnotes a.reversefootnote { text-decoration: none; color: var(--gold-dim); margin-left: 0.4rem; }
 
 /* target highlight so a jumped-to note is findable */
 .footnotes li:target { background: var(--gold-wash); }
+
+/* Collapsed so 40 sources don't stand between the platform and the call to action.
+   The summary takes over the frame and label .footnotes draws when it stands alone. */
+.sources {
+  max-width: 780px;
+  margin: 5rem auto 0;
+  border-top: 1px solid var(--rule);
+}
+
+.sources summary {
+  padding: 2.5rem 1.6rem 1rem;
+  cursor: pointer;
+  list-style: none;
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold);
+  transition: color 0.2s;
+}
+
+.sources summary::-webkit-details-marker { display: none; }
+.sources summary::after { content: " \25B8"; }
+.sources[open] summary::after { content: " \25BE"; }
+.sources summary:hover { color: var(--gold-light); }
+
+.sources .footnotes { margin: 0; padding-top: 0.8rem; border-top: 0; }
+.sources .footnotes::before { content: none; }
+
+/* Sidenotes are built from the footnotes by the script at the end of the layout.
+   Below the breakpoint a note opens under its line when its number is tapped. */
+.sidenote {
+  display: none;
+  color: var(--mute);
+  font-family: var(--sans);
+  font-size: 0.8rem;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+.sidenote.open {
+  display: block;
+  margin: 0.6rem 0 1rem;
+  padding-left: 1rem;
+  border-left: 1px solid var(--rule-hot);
+}
+
+.sidenote-num {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  color: var(--gold-dim);
+  margin-right: 0.5rem;
+}
+
+/* 1380px is where a 16rem note fits beside the 780px column; any narrower and the
+   simulation had notes drifting most of a screen below their lines */
+@media (min-width: 1380px) {
+  .sidenote, .sidenote.open {
+    display: block;
+    position: absolute;
+    width: 16rem;
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+}
 
 /* ============================================================
    ACCESSIBILITY
@@ -1243,7 +1314,8 @@ footer {
 }
 
 a:focus-visible,
-button:focus-visible {
+button:focus-visible,
+summary:focus-visible {
   outline: 2px solid var(--gold);
   outline-offset: 3px;
 }
@@ -1365,6 +1437,8 @@ button:focus-visible {
   .skip-link,
   .share-row,
   .footer-social,
+  .sidenote,
+  .sidenote.open,
   #share,
   .hero-actions,
   .hero-lpo-logo,
@@ -1407,6 +1481,9 @@ button:focus-visible {
 
   /* the Sources block already names each source — don't repeat the URL */
   .footnotes a::after { content: none !important; }
+  .sources summary::after { content: none; }
+  /* print the list even when closed and scripts are off; the beforeprint script covers older browsers */
+  .sources::details-content { content-visibility: visible; }
 
   footer { border-top: 1px solid #000; }
   .footer-lpo-logo { display: none; }

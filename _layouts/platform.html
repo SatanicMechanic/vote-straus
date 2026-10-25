@@ -118,7 +118,10 @@
 
   <!-- PLATFORM CONTENT -->
   <div class="platform-body">
-    {{ content }}
+    {%- comment -%} shortcut: matches kramdown's exact footnotes tag; if a kramdown upgrade changes it, Sources simply render uncollapsed — re-check then. {%- endcomment -%}
+    {%- capture sources_open -%}<details class="sources"><summary>Sources · {{ content | split: '<li id="fn:' | size | minus: 1 }}</summary><div class="footnotes" role="doc-endnotes">{%- endcapture %}
+    {{ content | replace: '<div class="footnotes" role="doc-endnotes">', sources_open }}
+    {%- if content contains '<div class="footnotes" role="doc-endnotes">' %}</details>{% endif %}
   </div>
 
   <!-- JOIN -->
@@ -234,6 +237,67 @@
         window.goatcounter.count({ path: a.href, title: a.textContent.trim(), event: true });
       });
     });
+
+    // Sidenotes: each source beside the sentence that cites it. Wide screens set the notes in the
+    // right margin; narrower ones open a note under its line when its number is tapped. The
+    // Sources list stays as the no-script and print version.
+    (function () {
+      var col = document.querySelector('.platform-body');
+      var wide = matchMedia('(min-width: 1380px)'); // keep in step with the .sidenote media query
+      var notes = [];
+      col.querySelectorAll('sup > a.footnote').forEach(function (a) {
+        var src = document.getElementById(a.hash.slice(1));
+        var p = src && src.querySelector('p');
+        if (!p) return; // an unexpected footnote shape keeps its plain link instead of breaking every note
+        var note = document.createElement('span');
+        note.className = 'sidenote';
+        note.id = 'sn-' + a.parentNode.id.slice(6); // from the sup's fnref:x[:n] id, which stays unique when a source is cited twice
+        note.setAttribute('role', 'note');
+        note.innerHTML = '<span class="sidenote-num">' + a.textContent + '</span>' + p.innerHTML;
+        note.querySelectorAll('.reversefootnote').forEach(function (back) { back.remove(); });
+        a.parentNode.after(note);
+        a.setAttribute('aria-controls', note.id);
+        notes.push({ a: a, note: note });
+      });
+
+      // Measure every note before moving any, so each pass lays the page out once.
+      function place() {
+        var on = wide.matches;
+        var edge = col.getBoundingClientRect().right - parseFloat(getComputedStyle(col).paddingRight) + 48;
+        var m = notes.map(function (n) {
+          if (!on) return null;
+          var op = n.note.offsetParent, r = op.getBoundingClientRect();
+          return { ref: n.a.getBoundingClientRect().top, h: n.note.offsetHeight, x: r.left + op.clientLeft, y: r.top + op.clientTop };
+        });
+        var bottom = -Infinity;
+        notes.forEach(function (n, i) {
+          n.a.setAttribute('aria-expanded', on || n.note.classList.contains('open'));
+          if (!m[i]) { n.note.style.top = n.note.style.left = ''; return; }
+          var top = Math.max(m[i].ref, bottom + 16); // stack under the previous note instead of overlapping it
+          bottom = top + m[i].h;
+          n.note.style.top = top - m[i].y + 'px';
+          n.note.style.left = edge - m[i].x + 'px';
+        });
+      }
+      new ResizeObserver(place).observe(col);
+      wide.addEventListener('change', place);
+      document.fonts.ready.then(place);
+
+      col.addEventListener('click', function (e) {
+        var a = e.target.closest('a.footnote[aria-controls]');
+        if (!a) return;
+        e.preventDefault(); // the note is beside or under the number; jumping to Sources would lose the reader's place
+        if (wide.matches) return;
+        a.setAttribute('aria-expanded', document.getElementById(a.getAttribute('aria-controls')).classList.toggle('open'));
+      });
+
+      // A closed <details> prints closed. Open it for the printout, then put it back.
+      var sources = col.querySelector('details.sources'), wasOpen;
+      if (sources) {
+        addEventListener('beforeprint', function () { wasOpen = sources.open; sources.open = true; });
+        addEventListener('afterprint', function () { sources.open = wasOpen; });
+      }
+    })();
   </script>
 </body>
 </html>
