@@ -62,7 +62,7 @@ Each has a section below, and so does the rest of what Salem does. Before fundin
   </div>
 </div>
 
-<nav class="glance" aria-labelledby="glance-heading">
+<nav class="glance" id="glance" aria-labelledby="glance-heading">
   <h2 class="glance-header" id="glance-heading">Platform at a Glance</h2>
   <div class="glance-grid">
     <a class="glance-item" href="#housing--homelessness"><span class="glance-label">Housing</span><span class="glance-claim">Let people build.</span></a>
@@ -318,7 +318,7 @@ Oregon restricts entry into the labor market from both ends: it dictates who may
 
   [Read more: Employment Effects of Minimum Wages — IZA World of Labor](https://wol.iza.org/articles/employment-effects-of-minimum-wages/long)
 
-- Repeal state and local restrictions on gig work, independent contracting, and flexible employment. Laws like AB5-style reclassification mandates destroy the work arrangements that many workers — particularly part-time workers, caregivers, and people building skills — deliberately choose.
+- Repeal state and local restrictions on gig work, independent contracting, and flexible employment. AB5-style reclassification mandates destroy the work arrangements that many workers — particularly part-time workers, caregivers, and people building skills — deliberately choose.
 
 _The minimum wage has a history its current defenders rarely discuss. It was championed in the early 20th century by Progressive Era reformers and labor economists who said openly that its purpose was to price "unemployable" workers — women, Black Americans, immigrants, the disabled — out of the labor market. This is not a libertarian reinterpretation. It is in the published work of the people who built the policy. The mechanism has not changed. The euphemism has. Whatever anyone intends by it now, the law still finds the same people._
 
@@ -373,7 +373,7 @@ TriMet is treated in Oregon political culture as a public good beyond scrutiny. 
 
 **Buses** are heavy, and pavement damage rises with roughly the fourth power of axle load. That is standard highway engineering. A loaded 40-foot bus can do the damage of somewhere between twelve hundred and ten thousand cars in a single pass.[^pavement] TriMet's battery-electric buses add several tons on the same two axles, and an empty bus still does the damage of several hundred cars. None of that appears in a fare. It is laid in asphalt and billed to whoever lives on the corridor. Buses also stop in travel lanes without pullouts, and the delay is paid by every driver behind them.
 
-**MAX light rail** is worse. Tracks permanently consume traffic lanes, grade crossings halt traffic in every direction each time a train passes. TriMet builds these lines with the condemnation power at its back: on the Portland–Milwaukie light rail project it valued one owner's property at $19,700, and establishing the real figure — $118,117, six times TriMet's — took a trial.[^walnut] For the $175 million Division bus rapid transit line, it planned permanent and temporary takings from parts of more than 140 properties along the corridor, then began filing condemnation actions against the owners with whom it had not reached agreement.[^division] The condemnation bar writes that last word in quotation marks. The land changes hands either way. The only question is whether the owner can afford to argue about the price.
+**MAX light rail** is worse. Tracks permanently consume traffic lanes; grade crossings halt traffic in every direction each time a train passes. TriMet builds these lines with the condemnation power at its back: on the Portland–Milwaukie light rail project it valued one owner's property at $19,700, and establishing the real figure — $118,117, six times TriMet's — took a trial.[^walnut] For the $175 million Division bus rapid transit line, it planned permanent and temporary takings from parts of more than 140 properties along the corridor, then began filing condemnation actions against the owners with whom it had not reached agreement.[^division] The condemnation bar writes that last word in quotation marks. The land changes hands either way. The only question is whether the owner can afford to argue about the price.
 
 The Interstate Bridge Replacement carries the pattern to its conclusion. A 1.9-mile MAX extension into Vancouver sits inside a program whose estimate rose from $6 billion in 2022 to $14.4 billion in March 2026. The response to that number was to fund a first phase that designs the transit crossing without laying any track: no service before 2036, and a federal grant decision that will not arrive until 2030. Vancouver's mayor, who wants the extension built, put the problem to her own side plainly: "All of the opponents get it. They can say they're building a light rail to nowhere."[^ibr]
 

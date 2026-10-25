@@ -21,12 +21,14 @@
   --paper-hot:    #FFFFFF;
   --paper-dim:    #CBBFAA;
   --mute:         #9A9690;
-  --mute-2:       #6B675F;
+  --mute-2:       #7F7B73; /* 4.7:1 on --ink; the old #6B675F was 3.5:1 */
 
   /* System */
   --serif: 'Fraunces', 'Iowan Old Style', Georgia, serif;
   --sans:  'DM Sans', system-ui, sans-serif;
   --mono:  ui-monospace, 'SF Mono', 'Menlo', monospace;
+  /* body copy: 1.02rem on phones, easing up to 18px (~78 characters a line) by ~720px */
+  --text-body: clamp(1.02rem, 0.9rem + 0.5vw, 1.125rem);
 
   --easing: cubic-bezier(0.22, 1, 0.36, 1);
 }
@@ -102,6 +104,12 @@ body {
   position: absolute;
   inset: 0;
   background:
+    /* left scrim: the gold kicker and first name sit on orange foliage, and no
+       top-to-bottom stop can darken them without darkening the pond too */
+    linear-gradient(90deg,
+      rgba(0,0,0,0.55) 0%,
+      rgba(0,0,0,0.4) 32%,
+      rgba(0,0,0,0) 58%),
     linear-gradient(180deg,
       rgba(0,0,0,0.45) 0%,
       rgba(0,0,0,0.06) 30%,
@@ -243,6 +251,7 @@ body {
   display: block;
   font-size: clamp(4rem, 11vw, 9.5rem);
   margin-left: -0.04em;
+  text-transform: uppercase; /* markup says "Straus" so screen readers say the name, not the letters */
 }
 
 .hero-tagline {
@@ -502,7 +511,7 @@ section {
 
 .about-text p {
   color: var(--paper-dim);
-  font-size: 1.02rem;
+  font-size: var(--text-body);
   line-height: 1.7;
   max-width: 58ch;
 }
@@ -550,7 +559,7 @@ section {
 
 .platform-body p {
   color: var(--paper-dim);
-  font-size: 1.02rem;
+  font-size: var(--text-body);
   line-height: 1.72;
   margin-bottom: 1.1rem;
 }
@@ -566,7 +575,7 @@ section {
 
 .platform-body ul li {
   color: var(--paper-dim);
-  font-size: 1.02rem;
+  font-size: var(--text-body);
   padding: 0.85rem 0 0.85rem 2.2rem;
   position: relative;
   border-bottom: 1px solid var(--rule);
@@ -591,14 +600,16 @@ section {
 
 .platform-body hr { display: none; }
 
-.platform-body a {
+/* Text links only: glance rows, footnote marks and CTAs carry a class and style
+   themselves. :where() keeps the specificity .platform-body a always had. */
+:where(.platform-body, .support-inner) a:not([class]) {
   color: var(--gold);
   text-decoration: none;
   border-bottom: 1px solid rgba(201,168,76,0.32);
   transition: border-color 0.2s, color 0.2s;
 }
 
-.platform-body a:hover { border-color: var(--gold); color: var(--gold-light); }
+:where(.platform-body, .support-inner) a:not([class]):hover { border-color: var(--gold); color: var(--gold-light); }
 
 /* ============================================================
    THE CASCADE — numbered typographic chain
@@ -966,12 +977,16 @@ section {
   font-weight: 700;
   font-variation-settings: "opsz" 144, "wght" 700;
   font-size: 1.8rem;
+  line-height: 1.15;
   letter-spacing: -0.02em;
   color: var(--gold);
   margin-bottom: 0.8rem;
 }
 
-.support-heading + p { color: var(--paper-dim); font-size: 1rem; }
+/* Every paragraph after the heading, not just the first. margin-bottom rather than
+   p + p, so it collapses into .support-aside's and .join-cta's own top margins. */
+.support-heading ~ p { color: var(--paper-dim); font-size: var(--text-body); margin-bottom: 1rem; }
+.support-heading ~ p:last-child { margin-bottom: 0; }
 
 
 .share-row {
@@ -1009,6 +1024,7 @@ section {
   font-family: var(--serif);
   font-weight: 700;
   font-size: 1.6rem;
+  line-height: 1.15;
   color: var(--gold);
   margin-bottom: 1.6rem;
 }
@@ -1180,7 +1196,7 @@ footer {
 .footnotes li { margin-bottom: 1rem; }
 .footnotes li::marker { color: var(--gold-dim); font-family: var(--mono); font-size: 0.8rem; }
 .footnotes p { margin: 0; }
-.footnotes a { color: var(--paper-dim); text-decoration: underline; text-underline-offset: 2px; }
+.footnotes a { color: var(--paper-dim); text-decoration: underline; text-underline-offset: 2px; border-bottom: 0; /* the underline is the link mark; the text-link border would double it */ }
 .footnotes a:hover { color: var(--gold-light); }
 .footnotes a.reversefootnote { text-decoration: none; color: var(--gold-dim); margin-left: 0.4rem; }
 
@@ -1223,6 +1239,7 @@ button:focus-visible {
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
+    animation-delay: 0s !important; /* else the hero still pops in piece by piece over 0.75s */
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
