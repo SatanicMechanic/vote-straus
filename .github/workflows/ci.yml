@@ -21,7 +21,7 @@ jobs:
       - uses: actions/checkout@v7
       - uses: ruby/setup-ruby@b1da4809b005e0178fe08a1d57317bffc00b7b4c # v1.332.0
         with:
-          ruby-version: "3.3.7"
+          ruby-version: "3.3"
           bundler-cache: true
       - run: bundle exec jekyll build
       - if: github.ref == 'refs/heads/main' && github.event_name == 'push'

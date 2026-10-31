@@ -16,3 +16,8 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    # One PR per run: sibling workflow-editing PRs can't auto-merge via GITHUB_TOKEN.
+    groups:
+      actions:
+        patterns:
+          - "*"
